@@ -60,15 +60,18 @@ This file performs two purposes, the first rather obvious (installing qemu-guest
     sudo qm set 8001 --cicustom "vendor=local:snippets/vendor.yaml"
     sudo qm set 8001 --tags ubuntu-template,22.04,cloudinit
     sudo qm set 8001 --ciuser untouchedwagons
+    sudo qm set 8001 --cipassword $(openssl passwd -6 $CLEARTEXT_PASSWORD)
     sudo qm set 8001 --sshkeys ~/.ssh/authorized_keys
     sudo qm set 8001 --ipconfig0 ip=dhcp
 
-The first command tells CI to use the vendor file we specified earler. The second can be skipped but adds decorative tags that show up in the Proxmox Web-UI. Cloned VMs inherit all these tags. The third specifies the user to create. The fourth imports SSH public keys so you can SSH in. Finally the virtio NIC is set to DHCP, this is *supposed* to be the default but manual specifying is necessary.
+The first command tells CI to use the vendor file we specified earler. The second can be skipped but adds decorative tags that show up in the Proxmox Web-UI. Cloned VMs inherit all these tags. The third specifies the user to create. The fourth sets the password. The fifth imports SSH public keys so you can SSH in. Finally the virtio NIC is set to DHCP, this is *supposed* to be the default but manual specifying is necessary.
 
-## (Almost) finally: Converting to template
+## Finally: Converting to template
 
     sudo qm template 8001
 
-Now your template is almost ready. You will be able to SSH into any clones you make but you won't be able to login through the web console because no password has been set. `sudo` will still work though. In the Proxmox Web UI navigate to your VM, then to Cloud-Init then password. Click Edit and enter your password.
-
 That's it! Your template is now ready to use. Clone this template as you wish (remember to adjust cores and RAM as needed) and start up the clone. After first boot Cloud-Init will kick in, create your user, install qemu-guest-agent and reboot. Once the reboot is complete you can SSH and use the VM however you like!
+
+## Thanks
+
+Thanks to ilude for telling me what command is needed to set the CI password.
