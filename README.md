@@ -1,6 +1,6 @@
 # Making a Ubuntu 22.04 VM Template for Proxmox and CloudInit
 
-This is a short guide for setting up a Ubuntu VM template in Proxmox using CloudInit in a scriptable manor.
+This is a short guide for setting up a Ubuntu VM template in Proxmox using CloudInit in a scriptable manner.
 
 For this guide I have made a few assumptions:
 
