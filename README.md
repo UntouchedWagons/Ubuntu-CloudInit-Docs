@@ -36,7 +36,7 @@ Feel free to change the 8001 to whatever you like, so long as you replace the 80
 
     sudo qm importdisk 8001 jammy-server-cloudimg-amd64.img local-zfs
     sudo qm set 8001 --scsihw virtio-scsi-pci --virtio0 local-zfs:vm-8001-disk-1,discard=on
-    sudo qm set 8001 --boot c --bootdisk virtio0
+    sudo qm set 8001 --boot order=virtio0
     sudo qm set 8001 --ide2 local-zfs:cloudinit
 
 The first command imports that image we downloaded earlier, if your disk storage is not local-zfs (for example local-lvm) then replace it with whatever you wish. Next command attaches the disk to the VM. If your disk storage is not on SSDs (which it should be) omit `,discard=on`. The third command sets the boot order. Fourth adds the cloudinit pseudo-cdrom drive.
