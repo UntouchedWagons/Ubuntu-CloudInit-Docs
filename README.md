@@ -1,4 +1,4 @@
-# Making a Ubuntu 22.04 VM Template for Proxmox and CloudInit
+# Making a Ubuntu 24.04 VM Template for Proxmox and CloudInit
 
 This is a short guide for setting up a Ubuntu VM template in Proxmox using CloudInit in a scriptable manner.
 
@@ -6,15 +6,15 @@ For this guide I have made a few assumptions:
 
 * You want your VMs to boot via UEFI as opposed to BIOS
 * Your Proxmox node's main storage is called `local-zfs`
-* You want to use Ubuntu 22.04
+* You want to use Ubuntu 24.04
 * You have SSH keys stored in ~/.ssh/authorized_keys of your regular user's home folder
 
 ## The basics
 
 The first step is to download a cloud image for Ubuntu, then we'll resize this image
 
-    #wget -q https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img
-    #qemu-img resize jammy-server-cloudimg-amd64.img 32G
+    #wget -q https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img
+    #qemu-img resize noble-server-cloudimg-amd64.img 32G
 
 Notice that even though I'm resizing this image to be 32 gigabytes the file won't actually be 32 gigabytes in size, this is because the image is what's called a sparse file. The image starts out at around ~2GB but unless we resize the image now any cloned VMs won't have any storage. Feel free to change the 32G to 20, 80 or whatever you like.
 
@@ -22,7 +22,7 @@ Notice that even though I'm resizing this image to be 32 gigabytes the file won'
 
 The next step is to create a basic VM that we'll build upon:
 
-    #sudo qm create 8001 --name "ubuntu-2204-cloudinit-template" --ostype l26 \
+    #sudo qm create 8001 --name "ubuntu-2404-cloudinit-template" --ostype l26 \
         --memory 1024 \
         --agent 1 \
         --bios ovmf --machine q35 --efidisk0 local-zfs:0,pre-enrolled-keys=0 \
@@ -34,7 +34,7 @@ Feel free to change the 8001 to whatever you like, so long as you replace the 80
 
 ## Configuring hardware
 
-    sudo qm importdisk 8001 jammy-server-cloudimg-amd64.img local-zfs
+    sudo qm importdisk 8001 noble-server-cloudimg-amd64.img local-zfs
     sudo qm set 8001 --scsihw virtio-scsi-pci --virtio0 local-zfs:vm-8001-disk-1,discard=on
     sudo qm set 8001 --boot order=virtio0
     sudo qm set 8001 --ide2 local-zfs:cloudinit
@@ -58,7 +58,7 @@ This file performs two purposes, the first rather obvious (installing qemu-guest
 ## Configuring CloudInit
 
     sudo qm set 8001 --cicustom "vendor=local:snippets/vendor.yaml"
-    sudo qm set 8001 --tags ubuntu-template,22.04,cloudinit
+    sudo qm set 8001 --tags ubuntu-template,24.04,cloudinit
     sudo qm set 8001 --ciuser untouchedwagons
     sudo qm set 8001 --cipassword $(openssl passwd -6 $CLEARTEXT_PASSWORD)
     sudo qm set 8001 --sshkeys ~/.ssh/authorized_keys
