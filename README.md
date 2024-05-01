@@ -72,6 +72,10 @@ The first command tells CI to use the vendor file we specified earler. The secon
 
 That's it! Your template is now ready to use. Clone this template as you wish (remember to adjust cores and RAM as needed) and start up the clone. After first boot Cloud-Init will kick in, create your user, install qemu-guest-agent and reboot. Once the reboot is complete you can SSH and use the VM however you like!
 
+## Sample scripts
+
+In the samples folder I have included some pre-made shell scripts to create proxmox templates for you. At the top of each file are two environment variables that will need to be adjusted to how proxmox is set up.
+
 ## Thanks
 
 Thanks to ilude for telling me what command is needed to set the CI password.
