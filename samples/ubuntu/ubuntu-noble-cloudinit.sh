@@ -18,7 +18,7 @@ sudo qm create $VMID --name "ubuntu-noble-template" --ostype l26 \
 sudo qm importdisk $VMID noble-server-cloudimg-amd64.img $STORAGE
 sudo qm set $VMID --scsihw virtio-scsi-pci --virtio0 $STORAGE:vm-$VMID-disk-1,discard=on
 sudo qm set $VMID --boot order=virtio0
-sudo qm set $VMID --ide2 $STORAGE:cloudinit
+sudo qm set $VMID --scsi1 $STORAGE:cloudinit
 
 cat << EOF | sudo tee /var/lib/vz/snippets/ubuntu.yaml
 #cloud-config
