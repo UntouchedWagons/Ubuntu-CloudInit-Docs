@@ -18,7 +18,7 @@ sudo qm create $VMID --name "debian-12-template-dcoker" --ostype l26 \
 sudo qm importdisk $VMID debian-12-generic-amd64+docker.qcow2 $STORAGE
 sudo qm set $VMID --scsihw virtio-scsi-pci --virtio0 $STORAGE:vm-$VMID-disk-1,discard=on
 sudo qm set $VMID --boot order=virtio0
-sudo qm set $VMID --ide2 $STORAGE:cloudinit
+sudo qm set $VMID --scsi1 $STORAGE:cloudinit
 
 cat << EOF | sudo tee /mnt/pve/remote-nfs/snippets/debian-12-docker.yaml
 #cloud-config
