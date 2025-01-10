@@ -11,7 +11,9 @@ For this guide I have made a few assumptions:
 
 ## The basics
 
-The first step is to download a cloud image for Ubuntu, then we'll resize this image
+The first step is to enable support for snippets in the local dataset. Log into the Proxmox web UI and click Datacenter on the left, then Storage. Click local then Edit and a small window will pop up. In the Content drop down click on snippets, then OK.
+
+Now log into Proxmox via SSH so that we can download a cloud image for Ubuntu, then resize this image:
 
     #wget -q https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img
     #qemu-img resize noble-server-cloudimg-amd64.img 32G
