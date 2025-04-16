@@ -44,7 +44,7 @@ Feel free to change the 8001 to whatever you like, so long as you replace the 80
 The first command imports that image we downloaded earlier, if your disk storage is not local-zfs (for example local-lvm) then replace it with whatever you wish. Next command attaches the disk to the VM. If your disk storage is not on SSDs (which it should be) omit `,discard=on`. The third command sets the boot order. Fourth adds the cloudinit pseudo-cdrom drive.
 
 ## Creating the vendor.yaml file for cloudinit
-
+    mkdir /var/lib/vz/snippets
     cat << EOF | sudo tee /var/lib/vz/snippets/vendor.yaml
     #cloud-config
     runcmd:
