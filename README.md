@@ -28,7 +28,7 @@ The next step is to create a basic VM that we'll build upon:
         --memory 1024 \
         --agent 1 \
         --bios ovmf --machine q35 --efidisk0 local-zfs:0,pre-enrolled-keys=0 \
-        --cpu host --socket 1 --cores 1 \
+        --cpu host --sockets 1 --cores 1 \
         --vga serial0 --serial0 socket  \
         --net0 virtio,bridge=vmbr0
 
