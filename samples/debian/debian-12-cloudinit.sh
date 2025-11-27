@@ -1,13 +1,38 @@
 #! /bin/bash
 
-VMID=8000
-STORAGE=local-zfs
+set -xe
 
-set -x
-rm -f debian-12-generic-amd64.qcow2
-wget -q https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-generic-amd64.qcow2
-qemu-img resize debian-12-generic-amd64.qcow2 8G
-sudo qm destroy $VMID
+VMID="${VMID:-8000}"
+STORAGE="${STORAGE:-local-zfs}"
+
+IMG="debian-12-generic-amd64.qcow2"
+BASE_URL="https://cloud.debian.org/images/cloud/bookworm/latest"
+EXPECTED_SHA=$(wget -qO- "$BASE_URL/SHA512SUMS" | awk '/'$IMG'/{print $1}')
+
+download() {
+    wget -q "$BASE_URL/$IMG"
+}
+
+verify() {
+    sha512sum "$IMG" | awk '{print $1}'
+}
+
+[ ! -f "$IMG" ] && download
+
+ACTUAL_SHA=$(verify)
+
+if [ "$EXPECTED_SHA" != "$ACTUAL_SHA" ]; then
+    rm -f "$IMG"
+    download
+    ACTUAL_SHA=$(verify)
+    [ "$EXPECTED_SHA" != "$ACTUAL_SHA" ] && exit 1
+fi
+
+rm -f debian-12-generic-amd64-resized.qcow2
+cp debian-12-generic-amd64.qcow2 debian-12-generic-amd64-resized.qcow2
+qemu-img resize debian-12-generic-amd64-resized.qcow2 8G
+
+sudo qm destroy $VMID || true
 sudo qm create $VMID --name "debian-12-template" --ostype l26 \
     --memory 1024 --balloon 0 \
     --agent 1 \
@@ -15,7 +40,7 @@ sudo qm create $VMID --name "debian-12-template" --ostype l26 \
     --cpu x86-64-v2-AES --cores 1 --numa 1 \
     --vga serial0 --serial0 socket  \
     --net0 virtio,bridge=vmbr0,mtu=1
-sudo qm importdisk $VMID debian-12-generic-amd64.qcow2 $STORAGE
+sudo qm importdisk $VMID debian-12-generic-amd64-resized.qcow2 $STORAGE
 sudo qm set $VMID --scsihw virtio-scsi-pci --virtio0 $STORAGE:vm-$VMID-disk-1,discard=on
 sudo qm set $VMID --boot order=virtio0
 sudo qm set $VMID --scsi1 $STORAGE:cloudinit
