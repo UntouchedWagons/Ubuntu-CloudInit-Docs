@@ -16,6 +16,8 @@ export VMID=8300 STORAGE=local-zfs
 curl -fsSL https://raw.githubusercontent.com/UntouchedWagons/Ubuntu-CloudInit-Docs/main/samples/ubuntu/ubuntu-noble-cloudinit.sh | bash
 ```
 
+Other scripts are available in the [samples](./samples) directory, and can be used similarly to the above.
+
 ## The basics
 
 The first step is to enable support for snippets in the local dataset. Log into the Proxmox web UI and click Datacenter on the left, then Storage. Click local then Edit and a small window will pop up. In the Content drop down click on snippets, then OK.
