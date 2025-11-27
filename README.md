@@ -12,7 +12,7 @@ For this guide I have made a few assumptions:
 ## Quick start
 If you want to quickly create an ubuntu VM template using this guide, you can run the following:
 ```
-export VMID=8300 STORAGE=local-lvm
+export VMID=8300 STORAGE=local-zfs
 curl -fsSL https://raw.githubusercontent.com/UntouchedWagons/Ubuntu-CloudInit-Docs/main/samples/ubuntu/ubuntu-noble-cloudinit.sh | bash
 ```
 
