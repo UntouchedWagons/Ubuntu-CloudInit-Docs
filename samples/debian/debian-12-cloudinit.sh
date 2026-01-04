@@ -45,6 +45,7 @@ sudo qm set $VMID --scsihw virtio-scsi-pci --virtio0 $STORAGE:vm-$VMID-disk-1,di
 sudo qm set $VMID --boot order=virtio0
 sudo qm set $VMID --scsi1 $STORAGE:cloudinit
 
+mkdir /var/lib/vz/snippets
 cat << EOF | sudo tee /var/lib/vz/snippets/debian-12.yaml
 #cloud-config
 runcmd:
