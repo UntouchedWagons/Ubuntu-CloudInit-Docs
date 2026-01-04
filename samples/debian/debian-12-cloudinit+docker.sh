@@ -45,6 +45,7 @@ sudo qm set $VMID --scsihw virtio-scsi-pci --virtio0 $STORAGE:vm-$VMID-disk-1,di
 sudo qm set $VMID --boot order=virtio0
 sudo qm set $VMID --scsi1 $STORAGE:cloudinit
 
+mkdir /var/lib/vz/snippets
 cat << EOF | sudo tee /var/lib/vz/snippets/debian-12-docker.yaml
 #cloud-config
 runcmd:
@@ -64,5 +65,5 @@ sudo qm set $VMID --cicustom "vendor=local:snippets/debian-12-docker.yaml"
 sudo qm set $VMID --tags debian-template,debian-12,cloudinit,docker
 sudo qm set $VMID --ciuser $USER
 sudo qm set $VMID --sshkeys ~/.ssh/authorized_keys
-sudo qm set $VMID --ipconfig0 ip=dhcp
+sudo qm set $VMID --ipconfig0 ip=dhcp ip6=dhcp
 sudo qm template $VMID
