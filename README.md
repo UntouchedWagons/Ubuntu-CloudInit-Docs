@@ -73,7 +73,7 @@ This file performs two purposes, the first rather obvious (installing qemu-guest
     sudo qm set 8001 --ciuser untouchedwagons
     sudo qm set 8001 --cipassword $(openssl passwd -6 $CLEARTEXT_PASSWORD)
     sudo qm set 8001 --sshkeys ~/.ssh/authorized_keys
-    sudo qm set 8001 --ipconfig0 ip=dhcp ip6=dhcp
+    sudo qm set 8001 --ipconfig0 ip=dhcp,ip6=dhcp
 
 The first command tells CI to use the vendor file we specified earler. The second can be skipped but adds decorative tags that show up in the Proxmox Web-UI. Cloned VMs inherit all these tags. The third specifies the user to create. The fourth sets the password. The fifth imports SSH public keys so you can SSH in. Finally the virtio NIC is set to DHCP, this is *supposed* to be the default but manual specifying is necessary.
 
