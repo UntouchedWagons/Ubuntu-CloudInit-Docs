@@ -34,10 +34,10 @@ qemu-img resize debian-13-generic-amd64-resized.qcow2 8G
 
 sudo qm destroy $VMID || true
 sudo qm create $VMID --name "debian-13-template-nvidia" --ostype l26 \
-    --memory 1024 --balloon 0 \
+    --memory 4096 --balloon 0 \
     --agent 1 \
     --bios ovmf --machine q35 --efidisk0 $STORAGE:0,pre-enrolled-keys=0 \
-    --cpu x86-64-v2-AES --cores 1 --numa 1 \
+    --cpu x86-64-v2-AES --cores 4 --numa 1 \
     --vga serial0 --serial0 socket  \
     --net0 virtio,bridge=vmbr0,mtu=1
 sudo qm importdisk $VMID debian-13-generic-amd64-resized.qcow2 $STORAGE
