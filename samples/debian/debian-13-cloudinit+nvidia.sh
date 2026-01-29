@@ -59,6 +59,8 @@ runcmd:
     - curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
     - apt-get update
     - apt-get install -y qemu-guest-agent
+    - echo "blacklist nouveau" > /etc/modprobe.d/blacklist-nouveau.conf
+    - update-initramfs -u -k all
     - reboot
 # Taken from https://forum.proxmox.com/threads/combining-custom-cloud-init-with-auto-generated.59008/page-3#post-428772
 EOF
