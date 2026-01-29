@@ -33,7 +33,7 @@ cp debian-13-generic-amd64.qcow2 debian-13-generic-amd64-resized.qcow2
 qemu-img resize debian-13-generic-amd64-resized.qcow2 8G
 
 sudo qm destroy $VMID || true
-sudo qm create $VMID --name "debian-13-template" --ostype l26 \
+sudo qm create $VMID --name "debian-13-template-docker" --ostype l26 \
     --memory 1024 --balloon 0 \
     --agent 1 \
     --bios ovmf --machine q35 --efidisk0 $STORAGE:0,pre-enrolled-keys=0 \
