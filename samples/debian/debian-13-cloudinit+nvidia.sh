@@ -49,7 +49,7 @@ if [ ! -d "/var/lib/vz/snippets" ]; then
   mkdir -p "/var/lib/vz/snippets"
 fi
 
-cat << EOF | sudo tee /var/lib/vz/snippets/debian-13.yaml
+cat << EOF | sudo tee /var/lib/vz/snippets/debian-13-nvidia.yaml
 #cloud-config
 runcmd:
     - |
@@ -63,7 +63,7 @@ runcmd:
 # Taken from https://forum.proxmox.com/threads/combining-custom-cloud-init-with-auto-generated.59008/page-3#post-428772
 EOF
 
-sudo qm set $VMID --cicustom "vendor=local:snippets/debian-13.yaml"
+sudo qm set $VMID --cicustom "vendor=local:snippets/debian-13-nvidia.yaml"
 sudo qm set $VMID --tags debian-template,debian-13,cloudinit,nvidia
 sudo qm set $VMID --ciuser $USER
 sudo qm set $VMID --sshkeys ~/.ssh/authorized_keys
