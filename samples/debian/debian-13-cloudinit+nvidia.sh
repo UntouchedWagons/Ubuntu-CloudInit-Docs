@@ -64,6 +64,11 @@ runcmd:
 # Taken from https://forum.proxmox.com/threads/combining-custom-cloud-init-with-auto-generated.59008/page-3#post-428772
 EOF
 
+echo "timezone: "$(cat /etc/timezone) | sudo tee -a /var/lib/vz/snippets/debian-13-nvidia.yaml
+echo "locale: "$LANG | sudo tee -a /var/lib/vz/snippets/debian-13-nvidia.yaml
+# As of 2026-02-27 CloudInit is unable to set the locale on Debian 13
+# See https://github.com/canonical/cloud-init/pull/6472
+
 sudo qm set $VMID --cicustom "vendor=local:snippets/debian-13-nvidia.yaml"
 sudo qm set $VMID --tags debian-template,debian-13,cloudinit,nvidia
 sudo qm set $VMID --ciuser $USER

@@ -66,6 +66,15 @@ The first command imports that image we downloaded earlier, if your disk storage
 
 This file performs two purposes, the first rather obvious (installing qemu-guest-agent) the second not so much. For some reason CloudInit starts *after* networking and thus you can't SSH or even ping the VM by the name you give it. This package is only run once so after this reboot you'll be able to use the VM.
 
+## Set timezone and locale
+
+Setting the timezone and locale is important for accurate timekeeping and localization.
+
+    echo "timezone: "$(cat /etc/timezone) | sudo tee -a /var/lib/vz/snippets/vendor.yaml
+    echo "locale: "$LANG | sudo tee -a /var/lib/vz/snippets/vendor.yaml
+
+Make sure your system's timezone and locale is correct first!
+
 ## Configuring CloudInit
 
     sudo qm set 8001 --cicustom "vendor=local:snippets/vendor.yaml"
