@@ -41,8 +41,8 @@ sudo qm create $VMID --name "debian-13-template" --ostype l26 \
     --vga serial0 --serial0 socket  \
     --net0 virtio,bridge=vmbr0,mtu=1
 sudo qm importdisk $VMID debian-13-generic-amd64-resized.qcow2 $STORAGE
-sudo qm set $VMID --scsihw virtio-scsi-pci --virtio0 $STORAGE:vm-$VMID-disk-1,discard=on
-sudo qm set $VMID --boot order=virtio0
+sudo qm set $VMID --scsihw virtio-scsi-pci --scsi0 $STORAGE:vm-$VMID-disk-1,discard=on,ssd=1
+sudo qm set $VMID --boot order=scsi0
 sudo qm set $VMID --scsi1 $STORAGE:cloudinit
 
 if [ ! -d "/var/lib/vz/snippets" ]; then
