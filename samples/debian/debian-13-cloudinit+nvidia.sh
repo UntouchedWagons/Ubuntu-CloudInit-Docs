@@ -46,18 +46,18 @@ sudo qm set $VMID --boot order=scsi0
 sudo qm set $VMID --scsi1 $STORAGE:cloudinit
 
 if [ ! -d "/var/lib/vz/snippets" ]; then
-  mkdir -p "/var/lib/vz/snippets"
+    mkdir -p "/var/lib/vz/snippets"
 fi
 
 cat << EOF | sudo tee /var/lib/vz/snippets/debian-13-nvidia.yaml
 #cloud-config
 runcmd:
     - sed -i 's/^Components: main$/Components: main contrib non-free non-free-firmware/' /etc/apt/sources.list.d/debian.sources
-    - apt-get install -y gpg
+    - apt-get update
+    - apt-get install -y gnupg qemu-guest-agent linux-headers-amd64
     - curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
     - curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
     - apt-get update
-    - apt-get install -y qemu-guest-agent linux-headers-amd64
     - DEBIAN_FRONTEND=noninteractive apt-get install -y nvidia-driver firmware-misc-nonfree nvidia-smi nvidia-container-runtime
     - reboot
 # Taken from https://forum.proxmox.com/threads/combining-custom-cloud-init-with-auto-generated.59008/page-3#post-428772

@@ -46,14 +46,15 @@ sudo qm set $VMID --boot order=scsi0
 sudo qm set $VMID --scsi1 $STORAGE:cloudinit
 
 if [ ! -d "/var/lib/vz/snippets" ]; then
-  mkdir -p "/var/lib/vz/snippets"
+    mkdir -p "/var/lib/vz/snippets"
 fi
 
 cat << EOF | sudo tee /var/lib/vz/snippets/debian-13.yaml
 #cloud-config
 runcmd:
+    - sed -i 's/^Components: main$/Components: main contrib non-free non-free-firmware/' /etc/apt/sources.list.d/debian.sources
     - apt-get update
-    - apt-get install -y qemu-guest-agent
+    - apt-get install -y gnupg qemu-guest-agent
     - reboot
 # Taken from https://forum.proxmox.com/threads/combining-custom-cloud-init-with-auto-generated.59008/page-3#post-428772
 EOF

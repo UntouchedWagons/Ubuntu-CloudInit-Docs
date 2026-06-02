@@ -46,14 +46,15 @@ sudo qm set $VMID --boot order=scsi0
 sudo qm set $VMID --scsi1 $STORAGE:cloudinit
 
 if [ ! -d "/var/lib/vz/snippets" ]; then
-  mkdir -p "/var/lib/vz/snippets"
+    mkdir -p "/var/lib/vz/snippets"
 fi
 
 cat << EOF | sudo tee /var/lib/vz/snippets/debian-13-docker.yaml
 #cloud-config
 runcmd:
+    - sed -i 's/^Components: main$/Components: main contrib non-free non-free-firmware/' /etc/apt/sources.list.d/debian.sources
     - apt-get update
-    - apt-get install -y qemu-guest-agent gnupg
+    - apt-get install -y gnupg qemu-guest-agent
     - install -m 0755 -d /etc/apt/keyrings
     - curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
     - chmod a+r /etc/apt/keyrings/docker.gpg
