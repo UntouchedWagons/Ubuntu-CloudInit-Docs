@@ -52,7 +52,7 @@ fi
 cat << EOF | sudo tee /var/lib/vz/snippets/debian-13.yaml
 #cloud-config
 runcmd:
-    - sed -i 's/^Components: main$/Components: main contrib non-free non-free-firmware/' /etc/apt/sources.list.d/debian.sources
+    - "sed -i 's/^Components: main$/Components: main contrib non-free non-free-firmware/' /etc/apt/sources.list.d/debian.sources"
     - apt-get update
     - apt-get install -y gnupg qemu-guest-agent
     - reboot
